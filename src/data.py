@@ -3,13 +3,15 @@ import numpy as np
 import wfdb
 import ast
 import torch
-def load_raw_data(df, sampling_rate, path):
-    if sampling_rate == 100:
-        data = [wfdb.rdsamp(path+f) for f in df.filename_lr]
-    else:
-        data = [wfdb.rdsamp(path+f) for f in df.filename_hr]
-    data = np.array([signal for signal, meta in data])
-    return data
+def load_raw_data(df, path):
+    #data_100 = [wfdb.rdsamp(path+f) for f in df.filename_lr]
+    data_500 = [wfdb.rdsamp(path+f) for f in df.filename_hr]
+    #data_100 = np.array([signal for signal, meta in data_100])
+    #print(len(data_100[0]),len(data_100[0][0]))
+    data_500 = np.array([signal for signal, meta in data_500])
+    #print(len(data_500[0]),len(data_500[0][0]))
+    #data = np.concatenate((data_100, data_500), axis=1)
+    return data_500
 
 path = '../Dataset/'
 sampling_rate=500
@@ -30,9 +32,11 @@ def aggregate_diagnostic(y_dic):
 Y['diagnostic_superclass'] = Y.scp_codes.apply(aggregate_diagnostic)
 
 def load_traindata(num_classes):
-    X = load_raw_data(Y, sampling_rate, path)
     Y_norm = Y[Y['diagnostic_superclass'].apply(lambda x: 'NORM' in x)]
-    X_norm = X[np.where(Y['diagnostic_superclass'].apply(lambda x: 'NORM' in x))]
+    print(Y_norm.shape)
+    X = load_raw_data(Y_norm[:num_classes], path)
+    #X_norm = X[np.where(Y['diagnostic_superclass'].apply(lambda x: 'NORM' in x))]
+    X_norm = X
     Y_norm_ids = torch.tensor(Y_norm['patient_id'].values[:len(X_norm)], dtype=torch.int32)
     return X_norm[:num_classes], Y_norm_ids[:num_classes]
 
