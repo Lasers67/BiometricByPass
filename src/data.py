@@ -11,7 +11,7 @@ def load_raw_data(df, sampling_rate, path):
     data = np.array([signal for signal, meta in data])
     return data
 
-path = '../Dataset/'
+path = '../Dataset/physionet.org/files/ptb-xl/1.0.3/'
 sampling_rate=500
 
 Y = pd.read_csv(path+'ptbxl_database.csv', index_col='ecg_id')
@@ -30,9 +30,9 @@ def aggregate_diagnostic(y_dic):
 Y['diagnostic_superclass'] = Y.scp_codes.apply(aggregate_diagnostic)
 
 def load_traindata(num_classes):
-    X = load_raw_data(Y, sampling_rate, path)
     Y_norm = Y[Y['diagnostic_superclass'].apply(lambda x: 'NORM' in x)]
-    X_norm = X[np.where(Y['diagnostic_superclass'].apply(lambda x: 'NORM' in x))]
+    X_norm = load_raw_data(Y_norm, sampling_rate, path)
+    #X_norm = X[np.where(Y['diagnostic_superclass'].apply(lambda x: 'NORM' in x))]
     Y_norm_ids = torch.tensor(Y_norm['patient_id'].values[:len(X_norm)], dtype=torch.int32)
     return X_norm[:num_classes], Y_norm_ids[:num_classes]
 
