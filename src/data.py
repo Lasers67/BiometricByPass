@@ -13,7 +13,7 @@ def load_raw_data(df, path):
     #data = np.concatenate((data_100, data_500), axis=1)
     return data_500
 
-path = '../Dataset/'
+path = '../Dataset/physionet.org/files/ptb-xl/1.0.3/'
 sampling_rate=500
 
 Y = pd.read_csv(path+'ptbxl_database.csv', index_col='ecg_id')
