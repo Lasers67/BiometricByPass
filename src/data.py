@@ -4,16 +4,17 @@ import wfdb
 import ast
 import torch
 def load_raw_data(df, path):
-    #data_100 = [wfdb.rdsamp(path+f) for f in df.filename_lr]
-    data_500 = [wfdb.rdsamp(path+f) for f in df.filename_hr]
-    #data_100 = np.array([signal for signal, meta in data_100])
+    data_100 = [wfdb.rdsamp(path+f) for f in df.filename_lr]
+    #data_500 = [wfdb.rdsamp(path+f) for f in df.filename_hr]
+    data_100 = np.array([signal for signal, meta in data_100])
     #print(len(data_100[0]),len(data_100[0][0]))
-    data_500 = np.array([signal for signal, meta in data_500])
+    #data_500 = np.array([signal for signal, meta in data_500])
     #print(len(data_500[0]),len(data_500[0][0]))
     #data = np.concatenate((data_100, data_500), axis=1)
-    return data_500
+    return data_100
 
-path = '../Dataset/physionet.org/files/ptb-xl/1.0.3/'
+#path = '../Dataset/physionet.org/files/ptb-xl/1.0.3/'
+path = '../Dataset/'
 sampling_rate=500
 
 Y = pd.read_csv(path+'ptbxl_database.csv', index_col='ecg_id')
