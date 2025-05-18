@@ -1,4 +1,3 @@
-import torch
 import torch.nn as nn
 from torch.nn.utils import spectral_norm
 
@@ -79,7 +78,6 @@ class Discriminator(nn.Module):
         x = self.leakyRelu(x)
         x = self.op(x)
         x = self.sigmoid(x)
-        print(x)
         return x.squeeze(2)
     
 
@@ -100,7 +98,7 @@ class SimpleCritic(nn.Module):
     
 
 class Generator(nn.Module):
-    def __init__(self, in_channels=1, out_channels=1, num_filters=32):
+    def __init__(self, in_channels=1, out_channels=1, num_filters=64):
         super(Generator, self).__init__()
         self.enc1 = nn.Sequential(
             nn.Conv1d(in_channels, num_filters, 4, 2, 1),  # 500 → 250
@@ -161,7 +159,7 @@ class Generator(nn.Module):
             nn.ReLU()
         )
         self.dec6 = nn.ConvTranspose1d(num_filters, out_channels, 4, 2, 1)  # 250 → 500
-        self.final_activation = nn.Tanh()
+        self.final_activation = nn.LeakyReLU(0.2) #nn.Tanh()
 
     def match_size(self,x, target):
         diff = x.size(2) - target.size(2)

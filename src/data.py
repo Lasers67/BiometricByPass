@@ -3,6 +3,7 @@ import numpy as np
 import wfdb
 import ast
 import torch
+from collections import Counter
 def load_raw_data(df, path):
     data_100 = [wfdb.rdsamp(path+f) for f in df.filename_lr]
     #data_500 = [wfdb.rdsamp(path+f) for f in df.filename_hr]
@@ -34,7 +35,7 @@ Y['diagnostic_superclass'] = Y.scp_codes.apply(aggregate_diagnostic)
 
 def load_traindata(num_classes):
     Y_norm = Y[Y['diagnostic_superclass'].apply(lambda x: 'NORM' in x)]
-    print(Y_norm.shape)
+    Y_norm = Y_norm.drop_duplicates(subset='patient_id', keep='first') #remove duplicates in patient_id
     X = load_raw_data(Y_norm[:num_classes], path)
     #X_norm = X[np.where(Y['diagnostic_superclass'].apply(lambda x: 'NORM' in x))]
     X_norm = X
