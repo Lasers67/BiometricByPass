@@ -16,7 +16,7 @@ def load_raw_data(df, path):
 
 #path = '../Dataset/physionet.org/files/ptb-xl/1.0.3/'
 path = '../Dataset/'
-sampling_rate=500
+sampling_rate=100
 
 Y = pd.read_csv(path+'ptbxl_database.csv', index_col='ecg_id')
 Y.scp_codes = Y.scp_codes.apply(lambda x: ast.literal_eval(x))

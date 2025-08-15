@@ -2,10 +2,10 @@ import torch.nn as nn
 from torch.nn.utils import spectral_norm
 
 class Critic(nn.Module):
-    def __init__(self, seq_size, num_filters=64):
+    def __init__(self, seq_size, num_filters=32):
         super(Critic, self).__init__()
         self.net = nn.Sequential(
-            spectral_norm(nn.Conv1d(1, num_filters, kernel_size=5, stride=2, padding=2)),
+            spectral_norm(nn.Conv1d(2, num_filters, kernel_size=5, stride=2, padding=2)),
             nn.LeakyReLU(0.2, inplace=True),
 
             spectral_norm(nn.Conv1d(num_filters, num_filters * 2, kernel_size=5, stride=2, padding=2)),

@@ -3,13 +3,6 @@ import numpy as np
 from scipy.interpolate import interp1d
 
 def time_wrap(ecg_data):
-    """
-    Randomly warps the ECG data in time using interpolation.
-    Args:
-        ecg_data (np.ndarray): 2D array with shape (T, C) where T is time and C is channels.
-    Returns:
-        np.ndarray: Time-warped ECG data of the same shape.
-    """
     T, C = ecg_data.shape
     warp_factor = np.random.uniform(0.8, 1.2)  # Randomly stretch or compress
 
